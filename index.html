@@ -7,13 +7,33 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="eightbit">
-  <div id="intro">
+
+  <div id="coin-screen">
+    <div id="arcade-screen">
+      <p class="arcade-text blinking-effect">INSERT COIN</p>
+    </div>
+    
+    <div id="arcade-machine">
+      <div id="joystick">
+        <div class="stick-base"></div>
+        <div class="stick"></div>
+      </div>
+      <div id="buttons">
+        <div class="button red"></div>
+        <div class="button blue"></div>
+      </div>
+
+      <div id="coin-slot"></div>
+      <div id="draggable-coin"></div>
+    </div>
+  </div>
+
+  <div id="intro" class="hidden">
     <div class="scenery"></div>
     <div class="ground"></div>
     <canvas id="sprite-canvas"></canvas>
     <p><span class="selector">></span> PRESS START</p>
   </div>
-
   <div id="content" class="hidden">
     <header>
       <h1>김지원</h1>
@@ -27,19 +47,15 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-    </header>
-
     <main>
       <section id="about">
         <h2>About Me</h2>
         <p>간단한 자기소개를 여기에 작성</p>
       </section>
-
       <section id="skills">
         <h2>Skills &amp; Tools</h2>
         <ul></ul>
       </section>
-
       <section id="projects">
         <h2>Projects</h2>
         <div class="project-list">
@@ -49,7 +65,6 @@
           </article>
         </div>
       </section>
-
       <section id="blog">
         <h2>Blog</h2>
         <ul class="post-list">
@@ -57,7 +72,6 @@
           <li><a href="#">Post 제목 2</a></li>
         </ul>
       </section>
-
       <section id="experience">
         <h2>Experience</h2>
         <ul class="exp-list">
@@ -68,19 +82,17 @@
           </li>
         </ul>
       </section>
-
       <section id="contact">
         <h2>Contact</h2>
         <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
         <p>GitHub: <a href="https://github.com/BeakHo-hub">BeakHo-hub</a></p>
       </section>
     </main>
-
     <footer>
       <p>&copy; 2025 김지원</p>
     </footer>
   </div>
-
+  <div id="transition-effect"></div>
   <script src="Tech.js"></script>
 </body>
 </html>

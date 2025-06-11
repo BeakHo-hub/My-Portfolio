@@ -21,6 +21,9 @@ body.eightbit::before {
     z-index: 9999;
 }
 
+/* =========================================== */
+/* == 코인 입력 화면 (디테일 강화) == */
+/* =========================================== */
 #coin-screen {
     position: fixed;
     top: 0;
@@ -47,7 +50,6 @@ body.eightbit::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out;
     position: relative;
     z-index: 210;
     pointer-events: none;
@@ -62,10 +64,15 @@ body.eightbit::before {
     border: 4px solid #333;
     border-top: none;
     border-radius: 0 0 10px 10px;
-    z-index: 215; 
-    transition: opacity 0.5s ease-out;
+    z-index: 215;
+    transition: opacity 1s ease, transform 1s cubic-bezier(0.5, 0, 0.75, 0);
 }
-#arcade-machine.fade-out { opacity: 0; }
+
+#arcade-machine.fade-out {
+    opacity: 0;
+    transform: translateY(100%) translateZ(-400px);
+}
+
 .arcade-text { color: #FFEE58; font-size: 2rem; margin: 0; transition: all 0.5s ease; }
 .blinking-effect { animation: blink 1.5s step-start infinite; }
 #coin-slot { position: absolute; top: 50%; right: 15%; transform: translateY(-50%); width: 12px; height: 60px; background: #333; border: 2px solid #222; border-radius: 6px; }
@@ -82,37 +89,79 @@ body.eightbit::before {
 .button.red { background-color: #F44336; border-color: #C62828; box-shadow-color: #B71C1C; }
 .button.blue { background-color: #2196F3; border-color: #1565C0; box-shadow-color: #0D47A1; }
 
+/* =========================================== */
+/* == 포트폴리오 인트로 (애니메이션) == */
+/* =========================================== */
 #intro {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(1px 1px at 10% 30%, #FFF, transparent), radial-gradient(1px 1px at 80% 20%, #FFF, transparent), radial-gradient(1px 1px at 55% 75%, #FFF, transparent), radial-gradient(2px 2px at 45% 25%, #CCC, transparent), radial-gradient(2px 2px at 70% 60%, #CCC, transparent), linear-gradient(to top, #73628A, #2E1C2B);
-    background-size: 400px 400px, 400px 400px, 400px 400px, 400px 400px, 400px 400px, auto;
+    background: linear-gradient(to top, #73628A, #2E1C2B);
     overflow: hidden;
     z-index: 100;
 }
-.scenery { position: absolute; top: calc(50% - 60px); left: 0; width: 1600px; height: 60px; background-image: url("data:image/svg+xml,%3Csvg width='800' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 50 60 l 25 -50 l 25 50 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 200 60 l 5 -5 l 15 -2 l 20 5 l 10 -8 l 15 3 l 10 -5 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 400 60 l 25 -50 l 25 50 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 650 60 l 10 -8 l 18 2 l 12 -5 l 16 6 l 10 -3 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: repeat-x; background-size: 800px 60px; z-index: 1; animation: scroll-scenery 12s linear infinite; }
-.ground { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #fff; z-index: 2; }
 
-/* [수정] 캔버스가 클릭을 방해하지 않도록 설정 */
-#intro canvas {
+#stars-far, #stars-mid {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 3;
-    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    background-repeat: repeat;
 }
+
+#stars-far {
+    background-image:
+      radial-gradient(1px 1px at 10% 30%, #FFF, transparent), radial-gradient(1px 1px at 80% 20%, #FFF, transparent), radial-gradient(1px 1px at 55% 75%, #FFF, transparent), radial-gradient(1px 1px at 25% 85%, #FFF, transparent), radial-gradient(1px 1px at 90% 95%, #FFF, transparent), radial-gradient(1px 1px at 5% 5%, #FFF, transparent), radial-gradient(1px 1px at 40% 60%, #FFF, transparent), radial-gradient(1px 1px at 70% 80%, #FFF, transparent), radial-gradient(1px 1px at 20% 15%, #FFF, transparent), radial-gradient(1px 1px at 95% 50%, #FFF, transparent), radial-gradient(1px 1px at 35% 5%, #FFF, transparent), radial-gradient(1px 1px at 60% 90%, #FFF, transparent), radial-gradient(1px 1px at 5% 70%, #FFF, transparent), radial-gradient(1px 1px at 85% 25%, #FFF, transparent);
+    background-size: 800px 800px;
+    animation: move-stars-far-down 150s linear infinite;
+}
+
+#stars-mid {
+    background-image:
+      radial-gradient(2px 2px at 45% 25%, #CCC, transparent), radial-gradient(2px 2px at 70% 60%, #CCC, transparent), radial-gradient(2px 2px at 15% 65%, #CCC, transparent), radial-gradient(2px 2px at 85% 40%, #CCC, transparent), radial-gradient(2px 2px at 30% 90%, #CCC, transparent), radial-gradient(2px 2px at 5% 35%, #CCC, transparent), radial-gradient(2px 2px at 90% 70%, #CCC, transparent), radial-gradient(2px 2px at 25% 50%, #CCC, transparent), radial-gradient(2px 2px at 65% 10%, #CCC, transparent), radial-gradient(2px 2px at 40% 85%, #CCC, transparent);
+    background-size: 1200px 1200px;
+    animation: move-stars-mid-down 100s linear infinite;
+}
+
+.scenery {
+    position: absolute;
+    top: calc(50% - 40px);
+    left: 0;
+    width: 1600px;
+    height: 40px;
+    background-image: url('data:image/svg+xml,%3Csvg width="800" height="60" viewBox="0 0 800 60" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M 30 60 L 55 10 L 80 60 Z M 150 60 L 165 30 L 195 30 L 210 60 Z M 280 60 L 305 15 L 330 60 Z M 400 60 L 425 25 L 450 60 Z M 520 60 L 535 30 L 565 30 L 580 60 Z M 650 60 L 675 20 L 700 60 Z" fill="none" stroke="%23fff" stroke-width="2"/%3E%3C/svg%3E');
+    background-repeat: repeat-x;
+    background-size: 800px 60px;
+    z-index: 1;
+    animation: scroll-scenery 15s linear infinite;
+}
+
+.ground { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #fff; z-index: 2; }
+#intro canvas { position: absolute; top: 0; left: 0; z-index: 3; pointer-events: none; }
 #intro p { cursor: pointer; position: absolute; top: calc(50% + 40px); width: 100%; text-align: center; z-index: 4; color: #FFC1E3; font-size: 2rem; opacity: 0; transition: opacity 1s ease-in-out; }
 #intro p.visible { opacity: 1; }
 #intro p .selector { visibility: hidden; margin-right: 0.5em; }
 #intro p.visible .selector { visibility: visible; animation: blink 1s step-start infinite; }
 
+/* --- 애니메이션 정의 --- */
 @keyframes scroll-scenery { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes move-stars-far-down { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
+@keyframes move-stars-mid-down { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
 @keyframes blink { 50% { visibility: hidden; } }
-@keyframes hyperspace { from { background-size: 1px 1px, 2px 2px, 3px 3px; } to { background-size: 400px 400px, 600px 600px, 800px 800px; } }
 
+@keyframes shrink-and-fade {
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* =========================================== */
+/* == 메인 콘텐츠 스타일 == */
+/* =========================================== */
 .hidden { display: none !important; }
 header, footer { text-align: center; padding: 1rem; background: #B3E5FC; border-bottom: 4px solid #81D4FA; color: #37474F; }
 nav ul { list-style: none; display: flex; justify-content: center; gap: 2rem; padding: 0; }
@@ -122,8 +171,50 @@ h1 { font-size: 2.5rem; }
 h2 { font-size: 1.5rem; margin-bottom: 1rem; text-shadow: 2px 2px #BBDEFB; color: #37474F; }
 .project-item, .post-list li, .exp-list li, #skills ul li { margin-bottom: 1rem; padding: 1rem; border: 4px solid #81D4FA; background: #fff; }
 
-#arcade-screen.zoom-in { transform: scale(10) translateZ(300px); opacity: 0; }
+/* =========================================== */
+/* == 화면 전환 연출 == */
+/* =========================================== */
+.pixelating {
+    filter: url(#pixelate-filter);
+}
+
+#flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0;
+    z-index: 9990;
+    pointer-events: none;
+    transition: opacity 0.1s ease-out;
+}
+#flash-overlay.flash {
+    opacity: 1;
+}
+
 .sword-cursor { cursor: url('sword.png') 16 16, auto; }
-#transition-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 209; pointer-events: none; background-color: #000; opacity: 0; transition: opacity 0.5s ease-in-out; }
-#transition-effect.hyperspace { opacity: 1; background-image: radial-gradient(1px 1px at 50% 50%, #fff, transparent), radial-gradient(1px 1px at 50% 50%, #fff, transparent), radial-gradient(1px 1px at 50% 50%, #eee, transparent); background-repeat: no-repeat; background-position: 50% 50%; animation: hyperspace 1.5s linear forwards; }
-body.sword-cursor #intro p { cursor: inherit; }
+
+#pixel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    z-index: 300;
+    pointer-events: none;
+}
+
+#pixel-overlay > div {
+    background-color: #000;
+    opacity: 1;
+    transform: scale(1);
+    animation-name: shrink-and-fade;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}

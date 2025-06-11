@@ -1,146 +1,164 @@
-/**
- * Tech.js - 최종 완성본 (전환 효과 타이밍 버그 수정)
- */
 document.addEventListener('DOMContentLoaded', () => {
-  // --- 요소 가져오기 ---
-  const coinScreen = document.getElementById('coin-screen');
-  const arcadeScreen = document.getElementById('arcade-screen');
-  const arcadeMachine = document.getElementById('arcade-machine');
-  const coinText = document.querySelector('#arcade-screen .arcade-text');
-  const coin = document.getElementById('draggable-coin');
-  const coinSlot = document.getElementById('coin-slot');
-  const intro = document.getElementById('intro');
-  const pressStartText = document.querySelector('#intro p');
-  const content = document.getElementById('content');
-  const canvas = document.getElementById('sprite-canvas');
-  const ctx = canvas.getContext('2d');
-  const transitionEffect = document.getElementById('transition-effect');
-  const sprite = new Image();
-  sprite.src = 'sprite.png';
-  let spriteInterval;
+    // 필요한 요소들을 모두 변수로 지정합니다.
+    const coin = document.getElementById('draggable-coin');
+    const coinSlot = document.getElementById('coin-slot');
+    const coinScreen = document.getElementById('coin-screen');
+    const arcadeScreen = document.getElementById('arcade-screen');
+    const arcadeMachine = document.getElementById('arcade-machine');
+    const intro = document.getElementById('intro');
+    const content = document.getElementById('content');
+    const pressStart = document.querySelector('#intro p');
+    const transitionEffect = document.getElementById('transition-effect');
+    const arcadeText = document.querySelector('.arcade-text');
 
-  // --- 드래그 앤 드롭 로직 ---
-  let isDragging = false;
-  let offsetX, offsetY;
-  
-  coin.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    coin.classList.add('dragging');
-    coin.style.transition = 'none';
-    
-    offsetX = e.clientX - coin.getBoundingClientRect().left;
-    offsetY = e.clientY - coin.getBoundingClientRect().top;
-  });
+    let isDragging = false;
+    let offsetX, offsetY;
 
-  window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const parentRect = coin.parentElement.getBoundingClientRect();
-    let newX = e.clientX - parentRect.left - offsetX;
-    let newY = e.clientY - parentRect.top - offsetY;
-    coin.style.transform = 'scale(1.1)';
-    coin.style.left = `${newX}px`;
-    coin.style.top = `${newY}px`;
-  });
+    coin.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        coin.classList.add('dragging');
+        offsetX = e.clientX - coin.getBoundingClientRect().left;
+        offsetY = e.clientY - coin.getBoundingClientRect().top;
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+    });
 
-  window.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    coin.classList.remove('dragging');
-    coin.style.transition = 'all 0.3s ease';
-    coin.style.transform = '';
+    function onMouseMove(e) {
+        if (!isDragging) return;
+        const parentRect = coin.parentElement.getBoundingClientRect();
+        let x = e.clientX - parentRect.left - offsetX;
+        let y = e.clientY - parentRect.top - offsetY;
+        coin.style.left = `${x}px`;
+        coin.style.top = `${y}px`;
+        coin.style.transform = '';
+    }
 
-    const coinRect = coin.getBoundingClientRect();
-    const slotRect = coinSlot.getBoundingClientRect();
+    function onMouseUp() {
+        if (!isDragging) return;
+        isDragging = false;
+        coin.classList.remove('dragging');
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
 
-    if (
-      coinRect.left < slotRect.right &&
-      coinRect.right > slotRect.left &&
-      coinRect.top < slotRect.bottom &&
-      coinRect.bottom > slotRect.top
-    ) {
-      handleCoinInserted();
-    } else {
-      coin.style.left = '';
-      coin.style.top = '';
-    }
-  });
+        const coinRect = coin.getBoundingClientRect();
+        const slotRect = coinSlot.getBoundingClientRect();
+        
+        const isCoinOverSlot = !(coinRect.right < slotRect.left || coinRect.left > slotRect.right || coinRect.bottom < slotRect.top || coinRect.top > slotRect.bottom);
 
-  // --- 코인 투입 성공 시 연출 함수 ---
-  function handleCoinInserted() {
-    coin.style.display = 'none';
-    coinText.textContent = 'Thank you!';
-    coinText.classList.remove('blinking-effect');
+        if (isCoinOverSlot) {
+            handleCoinInserted();
+        } else {
+            coin.style.left = '5%';
+            coin.style.top = 'calc(50% - 25px)';
+        }
+    }
+    
+    function handleCoinInserted() {
+        coin.style.pointerEvents = 'none';
+        coin.style.display = 'none';
+        arcadeText.textContent = 'Thank You!';
+        arcadeText.classList.remove('blinking-effect');
+        
+        setTimeout(() => {
+            arcadeScreen.classList.add('zoom-in');
+            arcadeMachine.classList.add('fade-out');
+            
+            setTimeout(() => {
+                coinScreen.classList.add('hidden');
+                intro.classList.remove('hidden');
+                document.body.classList.add('sword-cursor');
+                initIntroAnimation();
+            }, 1000);
+        }, 500);
+    }
 
-    setTimeout(() => {
-      arcadeScreen.classList.add('zoom-in');
-      arcadeMachine.classList.add('fade-out');
-      transitionEffect.classList.add('hyperspace');
-    }, 500);
+    let animationFrameId;
 
-    setTimeout(() => {
-      transitionEffect.style.opacity = '0';
+    function initIntroAnimation() {
+        const canvas = document.getElementById('sprite-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let sprite = {
+            image: new Image(),
+            x: -80,
+            // [수정] 기사의 발이 땅(화면 높이의 50%)에 닿도록 Y좌표 계산 방식 변경
+            y: window.innerHeight / 2 - 80, // sprite.height 값(80)을 빼서 발끝을 맞춤
+            width: 80,
+            height: 80,
+            dx: 2,
 
-      coinScreen.classList.add('hidden');
-      intro.classList.remove('hidden');
-      setupAnimation();
-      document.body.classList.add('sword-cursor');
-      window.addEventListener('resize', debouncedSetup);
-      
-      setTimeout(() => {
-        transitionEffect.classList.remove('hyperspace');
-      }, 100);
-    }, 2000);
-  }
+            // --- ⚙️ 애니메이션 설정 (자연스러운 값을 추천하지만, 취향에 맞게 조절하세요!) ---
+            totalFrames: 4,
+            animationSpeed: 8, // 추천값
+            // --------------------------------------------------------------------
+            
+            currentFrame: 0,
+            frameWidth: 0,
+            frameHeight: 0,
+            tickCounter: 0
+        };
+        
+        function drawSprite() {
+            ctx.drawImage(
+                sprite.image,
+                sprite.currentFrame * sprite.frameWidth, 0,
+                sprite.frameWidth, sprite.frameHeight,
+                sprite.x, sprite.y,
+                sprite.width, sprite.height
+            );
+        }
+        
+        // [수정] updateSprite 로직을 '이동'과 '애니메이션'으로 분리
+        function updateSprite() {
+            // 1. 위치 이동 로직 (화면 중앙에 도착하면 멈춤)
+            if (sprite.x < canvas.width / 2 - sprite.width / 2) {
+                sprite.x += sprite.dx;
+            } else {
+                sprite.x = canvas.width / 2 - sprite.width / 2;
+            }
 
-  // --- 기타 유틸 및 애니메이션 함수 ---
-  function debounce(func, delay) {let timeout; return function(...args) {clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), delay);};}
-  function setupAnimation() {clearInterval(spriteInterval); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const totalFrames = 4; const frameWidth = 320 / totalFrames; const frameHeight = 80; let currentFrame = 0; const targetX = (canvas.width - frameWidth) / 2; let currentX = -frameWidth; const groundY = canvas.height * 0.5; const spriteY = groundY - frameHeight; const walkSpeed = (targetX + frameWidth) / (2000 / 100); const animationSpeed = 100; spriteInterval = setInterval(() => {if (currentX < targetX) {currentX += walkSpeed; if (currentX >= targetX) {currentX = targetX; if (pressStartText && !pressStartText.classList.contains('visible')) {pressStartText.classList.add('visible');}}} ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(sprite, currentFrame * frameWidth, 0, frameWidth, frameHeight, currentX, spriteY, frameWidth, frameHeight); currentFrame = (currentFrame + 1) % totalFrames;}, animationSpeed);}
-  const debouncedSetup = debounce(setupAnimation, 250);
-  
-  function startPortfolio() {
-    pressStartText.removeEventListener('click', startPortfolio);
-    document.removeEventListener('keydown', handleEnterKey);
-    // document.body.classList.remove('sword-cursor'); // <- 커서 유지를 위해 주석 처리
-    
-    const barCount = 12;
-    transitionEffect.innerHTML = '';
-    for (let i = 0; i < barCount; i++) {
-      const bar = document.createElement('div');
-      bar.classList.add('interlace-bar');
-      transitionEffect.appendChild(bar);
-    }
-    const bars = document.querySelectorAll('.interlace-bar');
-    bars.forEach((bar, index) => {
-      setTimeout(() => {
-        bar.classList.add('animate');
-      }, index * 40);
-    });
-    setTimeout(() => {
-      clearInterval(spriteInterval);
-      intro.classList.add('hidden');
-      content.classList.remove('hidden');
-      window.removeEventListener('resize', debouncedSetup);
-    }, barCount * 40 + 100);
-    setTimeout(() => {
-      bars.forEach((bar, index) => {
-        setTimeout(() => {
-          bar.style.transformOrigin = 'left';
-          bar.classList.remove('animate');
-        }, index * 30);
-      });
-    }, barCount * 40 + 500);
-  }
+            // 2. 애니메이션 프레임 로직 (계속 실행됨)
+            sprite.tickCounter++;
+            if (sprite.tickCounter > sprite.animationSpeed) {
+                sprite.tickCounter = 0;
+                sprite.currentFrame = (sprite.currentFrame + 1) % sprite.totalFrames;
+            }
+        }
 
-  function handleEnterKey(e) {if (!intro.classList.contains('hidden') && e.key === 'Enter') {e.preventDefault(); startPortfolio();}}
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            updateSprite();
+            drawSprite();
+            animationFrameId = requestAnimationFrame(animate);
+        }
 
-  // --- 이벤트 리스너 연결 ---
-  pressStartText.addEventListener('click', startPortfolio);
-  document.addEventListener('keydown', handleEnterKey);
-  sprite.onerror = (err) => console.error('sprite.png 로딩 실패', err);
-  
-  // Skills 목록 동적 생성
-  const techs = ['HTML', 'CSS', 'JavaScript', 'React', 'Vue', 'Git', 'GitHub Pages'];
-  const skillsSection = document.querySelector('#skills');
-  const ul = skillsSection.querySelector('ul');
-  techs.forEach(item => {const li = document.createElement('li'); li.textContent = item; ul.appendChild(li); });
+        sprite.image.onload = () => {
+            sprite.frameWidth = sprite.image.width / sprite.totalFrames;
+            sprite.frameHeight = sprite.image.height;
+            // [수정] 기사의 y 좌표를 이미지 로드 후 설정하여 정확도 향상
+            sprite.y = window.innerHeight / 2 - sprite.frameHeight;
+            animationFrameId = requestAnimationFrame(animate);
+        };
+        sprite.image.onerror = () => console.error("'sprite.png' 이미지를 불러올 수 없습니다.");
+        sprite.image.src = 'sprite.png';
+
+        setTimeout(() => {
+            pressStart.classList.add('visible');
+        }, 2000);
+    }
+
+    pressStart.addEventListener('click', () => {
+        if(animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+        transitionEffect.classList.add('hyperspace');
+        setTimeout(() => {
+            intro.classList.add('hidden');
+            content.classList.remove('hidden');
+            document.body.classList.remove('sword-cursor');
+            transitionEffect.style.display = 'none';
+        }, 1500);
+    });
 });

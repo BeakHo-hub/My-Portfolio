@@ -2,231 +2,385 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 /* 기본 스타일 */
-body.eightbit { margin: 0; padding: 0; background: #E0F7FA; color: #37474F; font-family: 'Press Start 2P', monospace; }
-body.eightbit::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0, 0, 0, 0.05) 2px, rgba(0, 0, 0, 0.05) 4px); z-index: 9999; }
+body.eightbit {
+    margin: 0;
+    padding: 0;
+    background: #E0F7FA;
+    color: #37474F;
+    font-family: 'Press Start 2P', monospace;
+}
+body.eightbit::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0, 0, 0, 0.05) 2px, rgba(0, 0, 0, 0.05) 4px);
+    z-index: 9999;
+}
 
 /* =========================================== */
 /* == 코인 입력 화면 (디테일 강화) == */
 /* =========================================== */
 #coin-screen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: #1a1a1a;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-  perspective: 800px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    perspective: 800px;
 }
 
 #arcade-screen {
-  width: 60vw;
-  max-width: 800px;
-  height: 45vw;
-  max-height: 600px;
-  background-color: #000;
-  border-radius: 15px;
-  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out;
-  position: relative;
-  z-index: 210;
-  pointer-events: none;
+    width: 60vw;
+    max-width: 800px;
+    height: 45vw;
+    max-height: 600px;
+    background-color: #000;
+    border-radius: 15px;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out;
+    position: relative;
+    z-index: 210;
+    pointer-events: none;
 }
 
 #arcade-machine {
-  position: relative;
-  width: 70vw;
-  max-width: 900px;
-  height: 150px;
-  background-color: #4a4a4a;
-  border: 4px solid #333;
-  border-top: none;
-  border-radius: 0 0 10px 10px;
-  z-index: 205;
-  transition: opacity 0.5s ease-out;
+    position: relative;
+    width: 70vw;
+    max-width: 900px;
+    height: 150px;
+    background-color: #4a4a4a;
+    border: 4px solid #333;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 205;
+    transition: opacity 0.5s ease-out;
 }
 
 #arcade-machine.fade-out {
-  opacity: 0;
+    opacity: 0;
 }
 
-.arcade-text { color: #FFEE58; font-size: 2rem; margin: 0; transition: all 0.5s ease; }
-.blinking-effect { animation: blink 1.5s step-start infinite; }
+.arcade-text {
+    color: #FFEE58;
+    font-size: 2rem;
+    margin: 0;
+    transition: all 0.5s ease;
+}
+.blinking-effect {
+    animation: blink 1.5s step-start infinite;
+}
 
 #coin-slot {
-  position: absolute;
-  top: 50%;
-  right: 15%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 60px;
-  background: #333;
-  border: 2px solid #222;
-  border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 60px;
+    background: #333;
+    border: 2px solid #222;
+    border-radius: 6px;
 }
 
 #draggable-coin {
-  position: absolute;
-  left: 5%;
-  top: calc(50% - 25px);
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(45deg, #FFD700, #F0C400);
-  border: 3px solid #E0B400;
-  border-radius: 50%;
-  box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
-  cursor: grab;
-  user-select: none;
-  transition: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+    position: absolute;
+    left: 5%;
+    top: calc(50% - 25px);
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #FFD700, #F0C400);
+    border: 3px solid #E0B400;
+    border-radius: 50%;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+    user-select: none;
+    transition: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 #draggable-coin::before {
-  content: '★';
-  color: #fff;
-  font-size: 24px;
-  text-shadow: 0 0 5px #E0B400;
+    content: '★';
+    color: #fff;
+    font-size: 24px;
+    text-shadow: 0 0 5px #E0B400;
 }
 #draggable-coin::after {
-  content: '';
-  position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 40%;
-  height: 150%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: rotate(45deg);
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 40%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(45deg);
 }
 
 #draggable-coin.dragging {
-  cursor: grabbing;
-  transform: scale(1.1);
-  box-shadow: 10px 10px 20px rgba(0,0,0,0.4);
-  transition: none;
+    cursor: grabbing;
+    transform: scale(1.1);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4);
+    transition: none;
 }
 
 #joystick {
-  position: absolute;
-  left: 20%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 80px;
-  height: 80px;
+    position: absolute;
+    left: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 80px;
 }
 .stick-base {
-  width: 100%;
-  height: 100%;
-  background: #333;
-  border-radius: 50%;
-  border: 4px solid #222;
+    width: 100%;
+    height: 100%;
+    background: #333;
+    border-radius: 50%;
+    border: 4px solid #222;
 }
 .stick {
-  position: absolute;
-  top: -20px; /* [수정 완료] -25px -> -20px 로 변경하여 잘림 문제 해결 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 30px;
-  background: #555;
-  border-radius: 3px;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 30px;
+    background: #555;
+    border-radius: 3px;
 }
 .stick::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  background: #E53935;
-  border-radius: 50%;
-  border: 3px solid #C62828;
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: #E53935;
+    border-radius: 50%;
+    border: 3px solid #C62828;
 }
 #buttons {
-  position: absolute;
-  left: 45%;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  gap: 20px;
+    position: absolute;
+    left: 45%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 20px;
 }
 .button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 4px solid;
-  box-shadow: 0 5px 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid;
+    box-shadow: 0 5px 0;
 }
-.button.red { background-color: #F44336; border-color: #C62828; box-shadow-color: #B71C1C; }
-.button.blue { background-color: #2196F3; border-color: #1565C0; box-shadow-color: #0D47A1; }
+.button.red {
+    background-color: #F44336;
+    border-color: #C62828;
+    box-shadow-color: #B71C1C;
+}
+.button.blue {
+    background-color: #2196F3;
+    border-color: #1565C0;
+    box-shadow-color: #0D47A1;
+}
 
 
 /* =========================================== */
 /* == 포트폴리오 인트로 (애니메이션) == */
 /* =========================================== */
-#intro { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; background-image: radial-gradient(1px 1px at 10% 30%, #FFF, transparent), radial-gradient(1px 1px at 80% 20%, #FFF, transparent), radial-gradient(1px 1px at 55% 75%, #FFF, transparent), radial-gradient(2px 2px at 45% 25%, #CCC, transparent), radial-gradient(2px 2px at 70% 60%, #CCC, transparent); background-size: 400px 400px; animation: scroll-stars 25s linear infinite; overflow: hidden; z-index: 100; }
-.scenery { position: absolute; top: calc(50% - 60px); left: 0; width: 1600px; height: 60px; background-image: url("data:image/svg+xml,%3Csvg width='800' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 50 60 l 25 -50 l 25 50 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 200 60 l 5 -5 l 15 -2 l 20 5 l 10 -8 l 15 3 l 10 -5 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 400 60 l 25 -50 l 25 50 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 650 60 l 10 -8 l 18 2 l 12 -5 l 16 6 l 10 -3 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: repeat-x; background-size: 800px 60px; z-index: 1; animation: scroll-scenery 12s linear infinite; }
-.ground { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #fff; z-index: 2; }
-#intro canvas { position: absolute; top: 0; left: 0; z-index: 3; }
-#intro p { cursor: pointer; position: absolute; top: calc(50% + 40px); width: 100%; text-align: center; z-index: 4; color: #FFC1E3; font-size: 2rem; opacity: 0; transition: opacity 1s ease-in-out; }
-#intro p.visible { opacity: 1; }
-#intro p .selector { visibility: hidden; margin-right: 0.5em; }
-#intro p.visible .selector { visibility: visible; animation: blink 1s step-start infinite; }
+#intro {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(1px 1px at 10% 30%, #FFF, transparent),
+        radial-gradient(2px 2px at 80% 20%, #CCC, transparent),
+        radial-gradient(1px 1px at 55% 75%, #FFF, transparent),
+        radial-gradient(2px 2px at 45% 25%, #CCC, transparent),
+        radial-gradient(1px 1px at 70% 60%, #FFF, transparent),
+        radial-gradient(1px 1px at 30% 90%, #FFF, transparent),
+        radial-gradient(2px 2px at 90% 70%, #CCC, transparent),
+        radial-gradient(1px 1px at 15% 5%, #FFF, transparent),
+        radial-gradient(1px 1px at 85% 50%, #FFF, transparent),
+        radial-gradient(2px 2px at 5% 55%, #CCC, transparent),
+        radial-gradient(1px 1px at 40% 50%, #FFF, transparent),
+        linear-gradient(to top, #73628A, #2E1C2B);
+    background-size:
+        400px 400px, 400px 400px, 400px 400px, 400px 400px, 400px 400px,
+        400px 400px, 400px 400px, 400px 400px, 400px 400px, 400px 400px,
+        400px 400px, auto;
+    overflow: hidden;
+    z-index: 100;
+}
+.scenery {
+    position: absolute;
+    top: calc(50% - 60px);
+    left: 0;
+    width: 1600px;
+    height: 60px;
+    background-image: url("data:image/svg+xml,%3Csvg width='800' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 50 60 l 25 -50 l 25 50 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 200 60 l 5 -5 l 15 -2 l 20 5 l 10 -8 l 15 3 l 10 -5 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 400 60 l 25 -50 l 25 50 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M 650 60 l 10 -8 l 18 2 l 12 -5 l 16 6 l 10 -3 z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 800px 60px;
+    z-index: 1;
+    animation: scroll-scenery 12s linear infinite;
+}
+.ground {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    z-index: 2;
+}
+#intro canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+#intro p {
+    cursor: pointer;
+    position: absolute;
+    top: calc(50% + 40px);
+    width: 100%;
+    text-align: center;
+    z-index: 4;
+    color: #FFC1E3;
+    font-size: 2rem;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+#intro p.visible {
+    opacity: 1;
+}
+#intro p .selector {
+    visibility: hidden;
+    margin-right: 0.5em;
+}
+#intro p.visible .selector {
+    visibility: visible;
+    animation: blink 1s step-start infinite;
+}
 
 /* --- 애니메이션 정의 --- */
-@keyframes scroll-scenery { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes scroll-stars { from { background-position-y: 0px; } to { background-position-y: 400px; } }
-@keyframes blink { 50% { visibility: hidden; } }
+@keyframes scroll-scenery {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes blink {
+    50% { visibility: hidden; }
+}
 @keyframes hyperspace {
-  from { background-size: 1px 1px, 2px 2px, 3px 3px; }
-  to { background-size: 400px 400px, 600px 600px, 800px 800px; }
+    from { background-size: 1px 1px, 2px 2px, 3px 3px; }
+    to { background-size: 400px 400px, 600px 600px, 800px 800px; }
 }
 
 
 /* =========================================== */
 /* == 메인 콘텐츠 스타일 == */
 /* =========================================== */
-.hidden { display: none !important; }
-header, footer { text-align: center; padding: 1rem; background: #B3E5FC; border-bottom: 4px solid #81D4FA; color: #37474F; }
-nav ul { list-style: none; display: flex; justify-content: center; gap: 2rem; padding: 0; }
-nav a { text-decoration: none; color: #37474F; }
-section { padding: 2rem; border-bottom: 4px dashed #B3E5FC; max-width: 800px; margin: 0 auto; }
-h1 { font-size: 2.5rem; }
-h2 { font-size: 1.5rem; margin-bottom: 1rem; text-shadow: 2px 2px #BBDEFB; color: #37474F; }
-.project-item, .post-list li, .exp-list li, #skills ul li { margin-bottom: 1rem; padding: 1rem; border: 4px solid #81D4FA; background: #fff; }
+.hidden {
+    display: none !important;
+}
+header,
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #B3E5FC;
+    border-bottom: 4px solid #81D4FA;
+    color: #37474F;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0;
+}
+nav a {
+    text-decoration: none;
+    color: #37474F;
+}
+section {
+    padding: 2rem;
+    border-bottom: 4px dashed #B3E5FC;
+    max-width: 800px;
+    margin: 0 auto;
+}
+h1 {
+    font-size: 2.5rem;
+}
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px #BBDEFB;
+    color: #37474F;
+}
+.project-item,
+.post-list li,
+.exp-list li,
+#skills ul li {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 4px solid #81D4FA;
+    background: #fff;
+}
 
 /* =========================================== */
 /* == 화면 전환 연출 == */
 /* =========================================== */
-#arcade-screen.zoom-in { transform: scale(10) translateZ(300px); opacity: 0; }
-.sword-cursor { cursor: url('sword.png') 16 16, auto; }
+#arcade-screen.zoom-in {
+    transform: scale(10) translateZ(300px);
+    opacity: 0;
+}
+
+.sword-cursor {
+    cursor: url('sword.png') 16 16, auto;
+}
 
 #transition-effect {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 209;
-  pointer-events: none;
-  background-color: #000;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 209;
+    pointer-events: none;
+    background-color: #000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 #transition-effect.hyperspace {
-  opacity: 1;
-  background-image:
-    radial-gradient(1px 1px at 50% 50%, #fff, transparent),
-    radial-gradient(1px 1px at 50% 50%, #fff, transparent),
-    radial-gradient(1px 1px at 50% 50%, #eee, transparent);
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  animation: hyperspace 1.5s linear forwards;
+    opacity: 1;
+    background-image:
+        radial-gradient(1px 1px at 50% 50%, #fff, transparent),
+        radial-gradient(1px 1px at 50% 50%, #fff, transparent),
+        radial-gradient(1px 1px at 50% 50%, #eee, transparent);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    animation: hyperspace 1.5s linear forwards;
+}
+
+body.sword-cursor #intro p {
+    cursor: inherit;
 }

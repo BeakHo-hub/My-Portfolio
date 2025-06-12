@@ -11,7 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const flashOverlay = document.getElementById('flash-overlay');
     const pixelOverlay = document.getElementById('pixel-overlay');
     const pixelateFilter = document.querySelector("#pixelate-filter feMorphology");
-    const arcadeText = document.querySelector('.arcade-text'); // 수정된 부분
+    const arcadeText = document.querySelector('.arcade-text');
+    const nextSectionBtn = document.getElementById('next-section-btn');
+    const mainContent = document.getElementById('main-content');
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+
+
+    // 프로필 정보를 이곳에서 관리합니다.
+    const profileData = {
+        name: "김지원",
+        class: "SYSTEMS GAME DESIGNER",
+        avatar: "avatar.png", // 아바타 이미지 파일 경로
+        stats: [
+            { label: "주요 스킬", value: "시스템 기획" },
+            { label: "사용 엔진", value: "Unity, Unreal" },
+            { label: "특기", value: "데이터 밸런싱" },
+            { label: "성향", value: "논리적, 분석적" }
+        ],
+        contacts: [
+            { type: "email", link: "mailto:you@example.com", icon: "icon-email.png" },
+            { type: "linkedin", link: "https://www.linkedin.com/", icon: "icon-linkedin.png" },
+            { type: "github", link: "https://github.com/BeakHo-hub", icon: "icon-github.png" }
+        ]
+    };
 
     let isDragging = false;
     let offsetX, offsetY;
@@ -175,6 +198,42 @@ document.addEventListener('DOMContentLoaded', () => {
             pressStart.classList.add('visible');
         }, 2000);
     }
+    
+    function populateProfile() {
+        document.querySelector('.profile-name').textContent = profileData.name;
+        document.querySelector('.profile-class').textContent = profileData.class;
+        document.querySelector('#profile-avatar').src = profileData.avatar;
+
+        const statsGrid = document.querySelector('.stats-grid');
+        statsGrid.innerHTML = '';
+        profileData.stats.forEach(stat => {
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'label';
+            labelDiv.textContent = stat.label;
+
+            const valueDiv = document.createElement('div');
+            valueDiv.className = 'value';
+            valueDiv.textContent = stat.value;
+
+            statsGrid.appendChild(labelDiv);
+            statsGrid.appendChild(valueDiv);
+        });
+
+        const contactIcons = document.querySelector('.contact-icons');
+        contactIcons.innerHTML = '';
+        profileData.contacts.forEach(contact => {
+            const link = document.createElement('a');
+            link.href = contact.link;
+            link.target = '_blank';
+
+            const iconImg = document.createElement('img');
+            iconImg.src = contact.icon;
+            iconImg.alt = contact.type;
+
+            link.appendChild(iconImg);
+            contactIcons.appendChild(link);
+        });
+    }
 
     pressStart.addEventListener('click', () => {
         isIntroAnimationRunning = false;
@@ -192,26 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             intro.classList.add('hidden');
             content.classList.remove('hidden');
-            document.body.classList.remove('sword-cursor');
-
-            pixelOverlay.innerHTML = '';
-            pixelOverlay.style.display = 'grid';
-
-            const pixelCount = 400;
-            const fragments = document.createDocumentFragment();
-            for (let i = 0; i < pixelCount; i++) {
-                const pixel = document.createElement('div');
-                pixel.style.animationDelay = `${Math.random() * 0.5}s`;
-                pixel.style.animationPlayState = 'running';
-                fragments.appendChild(pixel);
-            }
-            pixelOverlay.appendChild(fragments);
             
-            setTimeout(() => {
-                pixelOverlay.style.display = 'none';
-                pixelOverlay.innerHTML = '';
-            }, 1000);
+            populateProfile();
 
         }, 1500);
+    });
+
+    nextSectionBtn.addEventListener('click', () => {
+        header.classList.remove('content-hidden');
+        footer.classList.remove('content-hidden');
+        mainContent.classList.remove('content-hidden');
+        
+        nextSectionBtn.style.display = 'none';
+
+        document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
     });
 });

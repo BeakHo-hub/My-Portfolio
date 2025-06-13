@@ -2,77 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 /* 기본 스타일 */
-body {
-    margin: 0;
-    padding: 0;
-    background: #E0F7FA;
-    color: #37474F;
-    font-family: 'Press Start 2P', monospace;
-}
-body.eightbit::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0, 0, 0, 0.05) 2px, rgba(0, 0, 0, 0.05) 4px);
-    z-index: 9999;
-}
+body { margin: 0; padding: 0; background: #000; color: #37474F; font-family: 'Press Start 2P', monospace; }
+body.eightbit::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0, 0, 0, 0.05) 2px, rgba(0, 0, 0, 0.05) 4px); z-index: 9999; }
 
 /* =========================================== */
-/* == 코인 입력 화면 (디테일 강화) == */
+/* == 코인 입력 화면 == */
 /* =========================================== */
-#coin-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #1a1a1a;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 200;
-    perspective: 800px;
-}
-
-#arcade-screen {
-    width: 60vw;
-    max-width: 800px;
-    height: 45vw;
-    max-height: 600px;
-    background-color: #000;
-    border-radius: 15px;
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 210;
-    pointer-events: none;
-}
-
-#arcade-machine {
-    position: relative;
-    width: 70vw;
-    max-width: 900px;
-    height: 150px;
-    background-color: #4a4a4a;
-    border: 4px solid #333;
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    z-index: 215;
-    transition: opacity 1s ease, transform 1s cubic-bezier(0.5, 0, 0.75, 0);
-}
-
-#arcade-machine.fade-out {
-    opacity: 0;
-    transform: translateY(100%) translateZ(-400px);
-}
-
+#coin-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #1a1a1a; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 200; perspective: 800px; }
+#arcade-screen { width: 60vw; max-width: 800px; height: 45vw; max-height: 600px; background-color: #000; border-radius: 15px; box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1); display: flex; justify-content: center; align-items: center; position: relative; z-index: 210; pointer-events: none; }
+#arcade-machine { position: relative; width: 70vw; max-width: 900px; height: 150px; background-color: #4a4a4a; border: 4px solid #333; border-top: none; border-radius: 0 0 10px 10px; z-index: 215; transition: opacity 1s ease, transform 1s cubic-bezier(0.5, 0, 0.75, 0); }
+#arcade-machine.fade-out { opacity: 0; transform: translateY(100%) translateZ(-400px); }
 .arcade-text { color: #FFEE58; font-size: 2rem; margin: 0; transition: all 0.5s ease; }
 .blinking-effect { animation: blink 1.5s step-start infinite; }
 #coin-slot { position: absolute; top: 50%; right: 15%; transform: translateY(-50%); width: 12px; height: 60px; background: #333; border: 2px solid #222; border-radius: 6px; }
@@ -89,57 +28,14 @@ body.eightbit::before {
 .button.red { background-color: #F44336; border-color: #C62828; box-shadow-color: #B71C1C; }
 .button.blue { background-color: #2196F3; border-color: #1565C0; box-shadow-color: #0D47A1; }
 
-
 /* =========================================== */
 /* == 포트폴리오 인트로 (애니메이션) == */
 /* =========================================== */
-#intro {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, #73628A, #2E1C2B);
-    overflow: hidden;
-    z-index: 100;
-}
-
-#stars-far, #stars-mid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-repeat: repeat;
-}
-
-#stars-far {
-    background-image:
-      radial-gradient(1px 1px at 10% 30%, #FFF, transparent), radial-gradient(1px 1px at 80% 20%, #FFF, transparent), radial-gradient(1px 1px at 55% 75%, #FFF, transparent), radial-gradient(1px 1px at 25% 85%, #FFF, transparent), radial-gradient(1px 1px at 90% 95%, #FFF, transparent), radial-gradient(1px 1px at 5% 5%, #FFF, transparent), radial-gradient(1px 1px at 40% 60%, #FFF, transparent), radial-gradient(1px 1px at 70% 80%, #FFF, transparent), radial-gradient(1px 1px at 20% 15%, #FFF, transparent), radial-gradient(1px 1px at 95% 50%, #FFF, transparent), radial-gradient(1px 1px at 35% 5%, #FFF, transparent), radial-gradient(1px 1px at 60% 90%, #FFF, transparent), radial-gradient(1px 1px at 5% 70%, #FFF, transparent), radial-gradient(1px 1px at 85% 25%, #FFF, transparent);
-    background-size: 800px 800px;
-    animation: move-stars-far-down 150s linear infinite;
-}
-
-#stars-mid {
-    background-image:
-      radial-gradient(2px 2px at 45% 25%, #CCC, transparent), radial-gradient(2px 2px at 70% 60%, #CCC, transparent), radial-gradient(2px 2px at 15% 65%, #CCC, transparent), radial-gradient(2px 2px at 85% 40%, #CCC, transparent), radial-gradient(2px 2px at 30% 90%, #CCC, transparent), radial-gradient(2px 2px at 5% 35%, #CCC, transparent), radial-gradient(2px 2px at 90% 70%, #CCC, transparent), radial-gradient(2px 2px at 25% 50%, #CCC, transparent), radial-gradient(2px 2px at 65% 10%, #CCC, transparent), radial-gradient(2px 2px at 40% 85%, #CCC, transparent);
-    background-size: 1200px 1200px;
-    animation: move-stars-mid-down 100s linear infinite;
-}
-
-.scenery {
-    position: absolute;
-    top: calc(50% - 40px);
-    left: 0;
-    width: 1600px;
-    height: 40px;
-    background-image: url('data:image/svg+xml,%3Csvg width="800" height="60" viewBox="0 0 800 60" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M 30 60 L 55 10 L 80 60 Z M 150 60 L 165 30 L 195 30 L 210 60 Z M 280 60 L 305 15 L 330 60 Z M 400 60 L 425 25 L 450 60 Z M 520 60 L 535 30 L 565 30 L 580 60 Z M 650 60 L 675 20 L 700 60 Z" fill="none" stroke="%23fff" stroke-width="2"/%3E%3C/svg%3E');
-    background-repeat: repeat-x;
-    background-size: 800px 60px;
-    z-index: 1;
-    animation: scroll-scenery 15s linear infinite;
-}
-
+#intro { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, #73628A, #2E1C2B); overflow: hidden; z-index: 100; }
+#stars-far, #stars-mid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: repeat; }
+#stars-far { background-image: radial-gradient(1px 1px at 10% 30%, #FFF, transparent), radial-gradient(1px 1px at 80% 20%, #FFF, transparent), radial-gradient(1px 1px at 55% 75%, #FFF, transparent), radial-gradient(1px 1px at 25% 85%, #FFF, transparent), radial-gradient(1px 1px at 90% 95%, #FFF, transparent), radial-gradient(1px 1px at 5% 5%, #FFF, transparent), radial-gradient(1px 1px at 40% 60%, #FFF, transparent), radial-gradient(1px 1px at 70% 80%, #FFF, transparent), radial-gradient(1px 1px at 20% 15%, #FFF, transparent), radial-gradient(1px 1px at 95% 50%, #FFF, transparent), radial-gradient(1px 1px at 35% 5%, #FFF, transparent), radial-gradient(1px 1px at 60% 90%, #FFF, transparent), radial-gradient(1px 1px at 5% 70%, #FFF, transparent), radial-gradient(1px 1px at 85% 25%, #FFF, transparent); background-size: 800px 800px; animation: move-stars-far-down 150s linear infinite; }
+#stars-mid { background-image: radial-gradient(2px 2px at 45% 25%, #CCC, transparent), radial-gradient(2px 2px at 70% 60%, #CCC, transparent), radial-gradient(2px 2px at 15% 65%, #CCC, transparent), radial-gradient(2px 2px at 85% 40%, #CCC, transparent), radial-gradient(2px 2px at 30% 90%, #CCC, transparent), radial-gradient(2px 2px at 5% 35%, #CCC, transparent), radial-gradient(2px 2px at 90% 70%, #CCC, transparent), radial-gradient(2px 2px at 25% 50%, #CCC, transparent), radial-gradient(2px 2px at 65% 10%, #CCC, transparent), radial-gradient(2px 2px at 40% 85%, #CCC, transparent); background-size: 1200px 1200px; animation: move-stars-mid-down 100s linear infinite; }
+.scenery { position: absolute; top: calc(50% - 40px); left: 0; width: 1600px; height: 40px; background-image: url('data:image/svg+xml,%3Csvg width="800" height="60" viewBox="0 0 800 60" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M 30 60 L 55 10 L 80 60 Z M 150 60 L 165 30 L 195 30 L 210 60 Z M 280 60 L 305 15 L 330 60 Z M 400 60 L 425 25 L 450 60 Z M 520 60 L 535 30 L 565 30 L 580 60 Z M 650 60 L 675 20 L 700 60 Z" fill="none" stroke="%23fff" stroke-width="2"/%3E%3C/svg%3E'); background-repeat: repeat-x; background-size: 800px 60px; z-index: 1; animation: scroll-scenery 15s linear infinite; }
 .ground { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #fff; z-index: 2; }
 #intro canvas { position: absolute; top: 0; left: 0; z-index: 3; pointer-events: none; }
 #intro p { cursor: pointer; position: absolute; top: calc(50% + 40px); width: 100%; text-align: center; z-index: 4; color: #FFC1E3; font-size: 2rem; opacity: 0; transition: opacity 1s ease-in-out; }
@@ -147,238 +43,67 @@ body.eightbit::before {
 #intro p .selector { visibility: hidden; margin-right: 0.5em; }
 #intro p.visible .selector { visibility: visible; animation: blink 1s step-start infinite; }
 
-/* --- 애니메이션 정의 --- */
-@keyframes scroll-scenery { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes move-stars-far-down { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
-@keyframes move-stars-mid-down { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
-@keyframes blink { 50% { visibility: hidden; } }
-
-@keyframes shrink-and-fade {
-    to {
-        transform: scale(0);
-        opacity: 0;
-    }
-}
-
 /* =========================================== */
-/* == 메인 콘텐츠 스타일 == */
+/* == 최종 프로필 화면 스타일 == */
 /* =========================================== */
-.hidden { display: none !important; }
+#content { position: relative; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem; box-sizing: border-box; overflow: hidden; }
 
-/* [추가] 처음엔 숨겨둘 콘텐츠를 위한 클래스 */
-.content-hidden {
-    display: none;
-}
-
-header, footer {
-    text-align: center;
-    padding: 1rem;
-    background: #B3E5FC;
-    border-bottom: 4px solid #81D4FA;
-    color: #37474F;
-}
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 0;
-}
-nav a {
-    text-decoration: none;
-    color: #37474F;
-    transition: color 0.2s;
-}
-nav a:hover {
-    color: #0277BD;
-}
-
-section {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
-    border-bottom: 4px dashed #B3E5FC;
-}
-
-#profile {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.pixel-button {
-    margin-top: 3rem;
-    padding: 1rem 2rem;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #FF5722;
-    border: none;
-    box-shadow: 4px 4px 0px #C62828;
-    cursor: pointer;
-    transition: all 0.1s ease-out;
-}
-.pixel-button:hover {
-    background-color: #F4511E;
-    box-shadow: 2px 2px 0px #C62828;
-    transform: translate(2px, 2px);
-}
-.pixel-button:active {
-    background-color: #E64A19;
-    box-shadow: 0px 0px 0px #C62828;
-    transform: translate(4px, 4px);
-}
-
-.profile-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: flex-start;
-    width: 100%;
-}
-
-.avatar-box {
-    flex-shrink: 0;
-    text-align: center;
-}
-
-.player-indicator {
-    color: #FF5722;
-    margin-bottom: 0.5rem;
-}
-
-#profile-avatar {
-    width: 160px;
-    height: 160px;
-    border: 4px solid #37474F;
-    background-color: #546E7A;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-}
-
-.stats-box {
-    flex-grow: 1;
-    min-width: 300px;
-    border: 4px solid #37474F;
-    padding: 1.5rem;
-    background-color: #CFD8DC;
-    box-shadow: 4px 4px 0px #90A4AE;
-}
-
-.profile-name {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #263238;
-}
-
-.profile-class {
-    margin: 0.25rem 0 1rem 0;
-    font-size: 0.9rem;
-    color: #455A64;
-}
-
-.stats-divider {
-    height: 4px;
-    background-image: linear-gradient(to right, #37474F 50%, transparent 50%);
-    background-size: 8px 4px;
-    margin: 1rem 0;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 0.75rem;
-    font-size: 0.9rem;
-}
-.stats-grid .label {
-    color: #D84315;
-}
-.stats-grid .value {
-    color: #37474F;
-}
-
-.contact-icons {
-    margin-top: 1.5rem;
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-}
-
-.contact-icons a {
-    display: inline-block;
-    transition: transform 0.2s ease;
-}
-.contact-icons a:hover {
-    transform: translateY(-2px);
-}
-.contact-icons img {
-    width: 32px;
-    height: 32px;
-}
-
-h1 { font-size: 2.5rem; }
-h2 { font-size: 1.5rem; margin-bottom: 1rem; text-shadow: 2px 2px #BBDEFB; color: #37474F; }
-.project-item, .post-list li, .exp-list li, #skills ul li {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: 4px solid #81D4FA;
-    background: #fff;
-}
-
-/* =========================================== */
-/* == 화면 전환 연출 == */
-/* =========================================== */
-.pixelating {
-    filter: url(#pixelate-filter);
-}
-
-#flash-overlay {
-    position: fixed;
+/* [수정 완료] 블러 처리된 이미지 배경 */
+#profile-background {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #fff;
-    opacity: 0;
-    z-index: 9990;
-    pointer-events: none;
-    transition: opacity 0.1s ease-out;
+    z-index: -1;
+    background-image: url('knight-background.png'); /* 이미지 파일명 */
+    background-color: #2E1C2B; /* 이미지가 로드되지 않을 때를 위한 배경색 */
+    background-size: contain; /* [수정] 이미지가 잘리지 않도록 contain으로 변경 */
+    background-repeat: no-repeat; /* [추가] 이미지 반복 방지 */
+    background-position: left center; /* [수정] 왼쪽 중앙에 이미지를 고정 */
+    filter: blur(5px);
+    transform: scale(1.1);
 }
-#flash-overlay.flash {
-    opacity: 1;
-}
+#profile { border-bottom: none; padding: 0; max-width: 960px; width: 100%; opacity: 0; animation: show-profile-card 1s forwards 0.5s; }
+.profile-container { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; width: 100%; }
+.avatar-box { flex-shrink: 0; text-align: center; position: relative; }
+.avatar-box::after { content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; border: 4px solid #FFC1E3; animation: pulse-border 2s infinite; box-shadow: 0 0 15px #FFC1E3; pointer-events: none; }
+.player-indicator { color: #FFC1E3; text-shadow: 0 0 5px #FFC1E3; margin-bottom: 0.5rem; font-size: 1.1rem; }
+#profile-avatar { width: 200px; height: 200px; border: 4px solid #73628A; background-color: #2E1C2B; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; }
+.stats-box { flex-grow: 1; min-width: 300px; border: 4px solid #73628A; padding: 1.5rem 2rem; background-color: rgba(46, 28, 43, 0.8); box-shadow: 4px 4px 0px #73628A; color: #fff; }
+.profile-name { margin: 0; font-size: 2rem; color: #fff; text-shadow: 0 0 8px #FFC1E3; }
+.profile-name-cursor { display: inline-block; width: 12px; height: 2rem; background: #FFC1E3; vertical-align: middle; margin-left: 5px; animation: blink 1s step-start infinite; }
+.profile-class { margin: 0.5rem 0 1.5rem 0; font-size: 1rem; color: #E1BEE7; }
+.stats-divider { height: 4px; background-image: linear-gradient(to right, #73628A 50%, transparent 50%); background-size: 8px 4px; margin: 1.5rem 0; }
+.stats-grid { display: flex; flex-direction: column; gap: 1.25rem; font-size: 1rem; }
+.stat-item { display: flex; flex-direction: column; gap: 0.5rem; }
+.stat-item .label { color: #fff; }
+.stat-bar { width: 100%; height: 22px; background-color: #2E1C2B; border: 2px solid #73628A; padding: 2px; box-sizing: border-box; }
+.stat-bar-fill { width: 0%; height: 100%; background: linear-gradient(to right, #FFC1E3, #B486AB); transition: width 1s ease-out; }
+.contact-icons { margin-top: 1.5rem; display: flex; gap: 1.5rem; align-items: center; }
+.contact-icons a { display: inline-block; transition: transform 0.2s ease; }
+.contact-icons a:hover { transform: translateY(-2px); }
+.contact-icons img { width: 32px; height: 32px; filter: invert(90%) sepia(13%) saturate(740%) hue-rotate(288deg) brightness(104%) contrast(93%); }
 
+/* =========================================== */
+/* == 화면 전환 연출 == */
+/* =========================================== */
+.hidden { display: none !important; }
+.pixelating { filter: url(#pixelate-filter); }
+#flash-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #fff; opacity: 0; z-index: 9990; pointer-events: none; transition: opacity 0.1s ease-out; }
+#flash-overlay.flash { opacity: 1; }
 .sword-cursor { cursor: url('sword.png') 16 16, auto; }
+body.sword-cursor #intro p { cursor: url('sword.png') 16 16, auto; }
+#pixel-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(20, 1fr); z-index: 300; pointer-events: none; }
+#pixel-overlay > div { background-color: #000; opacity: 1; transform: scale(1); animation-name: shrink-and-fade; animation-duration: 0.5s; animation-fill-mode: forwards; animation-play-state: paused; }
 
-#pixel-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: none;
-    grid-template-columns: repeat(20, 1fr);
-    grid-template-rows: repeat(20, 1fr);
-    z-index: 300;
-    pointer-events: none;
-}
-
-#pixel-overlay > div {
-    background-color: #000;
-    opacity: 1;
-    transform: scale(1);
-    animation-name: shrink-and-fade;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-    animation-play-state: paused;
-}
-
-body.sword-cursor #intro p {
-    cursor: url('sword.png') 16 16, auto;
-}
+/* =========================================== */
+/* == 애니메이션 정의 == */
+/* =========================================== */
+@keyframes scroll-scenery { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes move-stars-far-down { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
+@keyframes move-stars-mid-down { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
+@keyframes blink { 50% { visibility: hidden; } }
+@keyframes shrink-and-fade { to { transform: scale(0); opacity: 0; } }
+@keyframes show-profile-card { to { opacity: 1; } }
+@keyframes pulse-border { 50% { box-shadow: 0 0 25px #FFC1E3, inset 0 0 10px #FFC1E3; } }

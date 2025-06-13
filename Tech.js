@@ -3,8 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const coin = document.getElementById('draggable-coin');
     const coinSlot = document.getElementById('coin-slot');
     const coinScreen = document.getElementById('coin-screen');
-    const arcadeScreen = document.getElementById('arcade-screen');
-    const arcadeMachine = document.getElementById('arcade-machine');
     const intro = document.getElementById('intro');
     const content = document.getElementById('content');
     const pressStart = document.querySelector('#intro p');
@@ -12,26 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const pixelOverlay = document.getElementById('pixel-overlay');
     const pixelateFilter = document.querySelector("#pixelate-filter feMorphology");
     const arcadeText = document.querySelector('.arcade-text');
-    const nextSectionBtn = document.getElementById('next-section-btn');
-    const mainContent = document.getElementById('main-content');
-    const header = document.querySelector('header');
-    const footer = document.querySelector('footer');
 
-
-    // 프로필 정보를 이곳에서 관리합니다.
     const profileData = {
         name: "김지원",
         class: "SYSTEMS GAME DESIGNER",
-        avatar: "avatar.png", // 아바타 이미지 파일 경로
+        avatar: "avatar.png",
         stats: [
-            { label: "주요 스킬", value: "시스템 기획" },
-            { label: "사용 엔진", value: "Unity, Unreal" },
-            { label: "특기", value: "데이터 밸런싱" },
-            { label: "성향", value: "논리적, 분석적" }
+            { label: "시스템 기획", value: 85 },
+            { label: "데이터 밸런싱", value: 90 },
+            { label: "Unity / C#", value: 75 },
+            { label: "Unreal / C++", value: 60 }
         ],
         contacts: [
             { type: "email", link: "mailto:you@example.com", icon: "icon-email.png" },
-            { type: "linkedin", link: "https://www.linkedin.com/", icon: "icon-linkedin.png" },
             { type: "github", link: "https://github.com/BeakHo-hub", icon: "icon-github.png" }
         ]
     };
@@ -78,10 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleCoinInserted() {
         coin.style.pointerEvents = 'none';
         coin.style.display = 'none';
-
         arcadeText.textContent = 'Thank You!';
         arcadeText.classList.remove('blinking-effect');
-        arcadeMachine.classList.add('fade-out');
+        document.getElementById('arcade-machine').classList.add('fade-out');
 
         setTimeout(() => {
             const animationDuration = 800;
@@ -95,10 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!startTime) startTime = currentTime;
                 const elapsedTime = currentTime - startTime;
                 const progress = Math.min(elapsedTime / animationDuration, 1);
-
                 const currentPixelation = progress * maxPixelation;
                 pixelateFilter.setAttribute('radius', currentPixelation);
-
                 const currentScale = 1 + (progress * (maxScale - 1));
                 const currentOpacity = 1 - progress;
                 coinScreen.style.transform = `scale(${currentScale})`;
@@ -110,8 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     coinScreen.classList.add('hidden');
                     intro.classList.remove('hidden');
                     document.body.classList.add('sword-cursor');
-                    initIntroAnimation();
-
+                    initIntroAnimation(); // 기사 애니메이션 시작
                     coinScreen.classList.remove('pixelating');
                     coinScreen.style.transform = '';
                     coinScreen.style.opacity = '';
@@ -145,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             y: window.innerHeight / 2 - 80,
             width: 80,
             height: 80,
-            dx: 2,
+            dx: 4, // [수정 완료] 속도를 다시 4로 복원
             totalFrames: 4,
             animationSpeed: 8,
             currentFrame: 0,
@@ -154,27 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
             tickCounter: 0
         };
         
-        function drawSprite() {
-            ctx.drawImage(
-                sprite.image,
-                sprite.currentFrame * sprite.frameWidth, 0,
-                sprite.frameWidth, sprite.frameHeight,
-                sprite.x, sprite.y,
-                sprite.width, sprite.height
-            );
-        }
+        function drawSprite() { ctx.drawImage( sprite.image, sprite.currentFrame * sprite.frameWidth, 0, sprite.frameWidth, sprite.frameHeight, sprite.x, sprite.y, sprite.width, sprite.height ); }
         
         function updateSprite() {
-            if (sprite.x < canvas.width / 2 - sprite.width / 2) {
-                sprite.x += sprite.dx;
-            } else {
-                sprite.x = canvas.width / 2 - sprite.width / 2;
-            }
+            if (sprite.x < canvas.width / 2 - sprite.width / 2) { sprite.x += sprite.dx; } else { sprite.x = canvas.width / 2 - sprite.width / 2; }
             sprite.tickCounter++;
-            if (sprite.tickCounter > sprite.animationSpeed) {
-                sprite.tickCounter = 0;
-                sprite.currentFrame = (sprite.currentFrame + 1) % sprite.totalFrames;
-            }
+            if (sprite.tickCounter > sprite.animationSpeed) { sprite.tickCounter = 0; sprite.currentFrame = (sprite.currentFrame + 1) % sprite.totalFrames; }
         }
 
         function animate() {
@@ -199,40 +171,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
     
-    function populateProfile() {
-        document.querySelector('.profile-name').textContent = profileData.name;
-        document.querySelector('.profile-class').textContent = profileData.class;
-        document.querySelector('#profile-avatar').src = profileData.avatar;
+    function populateAndAnimateProfile() {
+        const nameEl = document.querySelector('.profile-name');
+        const classEl = document.querySelector('.profile-class');
+        const avatarEl = document.querySelector('#profile-avatar');
+        const statsGridEl = document.querySelector('.stats-grid');
+        const contactIconsEl = document.querySelector('.contact-icons');
 
-        const statsGrid = document.querySelector('.stats-grid');
-        statsGrid.innerHTML = '';
+        avatarEl.src = profileData.avatar;
+        statsGridEl.innerHTML = '';
+        contactIconsEl.innerHTML = '';
+
+        function typewriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            const cursor = document.createElement('span');
+            cursor.className = 'profile-name-cursor';
+            element.appendChild(cursor);
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    element.insertBefore(document.createTextNode(text.charAt(i)), cursor);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                    setTimeout(() => cursor.remove(), 1000);
+                }
+            }, speed);
+        }
+
         profileData.stats.forEach(stat => {
-            const labelDiv = document.createElement('div');
-            labelDiv.className = 'label';
-            labelDiv.textContent = stat.label;
-
-            const valueDiv = document.createElement('div');
-            valueDiv.className = 'value';
-            valueDiv.textContent = stat.value;
-
-            statsGrid.appendChild(labelDiv);
-            statsGrid.appendChild(valueDiv);
+            const item = document.createElement('div');
+            item.className = 'stat-item';
+            const label = document.createElement('span');
+            label.className = 'label';
+            label.textContent = stat.label;
+            const bar = document.createElement('div');
+            bar.className = 'stat-bar';
+            const fill = document.createElement('div');
+            fill.className = 'stat-bar-fill';
+            fill.dataset.value = stat.value + '%';
+            bar.appendChild(fill);
+            item.appendChild(label);
+            item.appendChild(bar);
+            statsGridEl.appendChild(item);
         });
-
-        const contactIcons = document.querySelector('.contact-icons');
-        contactIcons.innerHTML = '';
+        
         profileData.contacts.forEach(contact => {
             const link = document.createElement('a');
             link.href = contact.link;
             link.target = '_blank';
-
             const iconImg = document.createElement('img');
             iconImg.src = contact.icon;
             iconImg.alt = contact.type;
-
             link.appendChild(iconImg);
-            contactIcons.appendChild(link);
+            contactIconsEl.appendChild(link);
         });
+
+        setTimeout(() => {
+            typewriter(nameEl, profileData.name);
+            typewriter(classEl, profileData.class, 30);
+            document.querySelectorAll('.stat-bar-fill').forEach(fill => {
+                fill.style.width = fill.dataset.value;
+            });
+        }, 1000);
     }
 
     pressStart.addEventListener('click', () => {
@@ -241,29 +242,38 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('#intro .scenery, #intro #stars-far, #intro #stars-mid').forEach(el => {
             el.style.animationPlayState = 'paused';
         });
-
         pressStart.innerHTML = 'READY?';
         pressStart.classList.add('blinking-effect');
+        document.body.classList.remove('sword-cursor');
         
         setTimeout(() => {
-            flashOverlay.classList.add('flash');
-            setTimeout(() => flashOverlay.classList.remove('flash'), 150);
-
-            intro.classList.add('hidden');
-            content.classList.remove('hidden');
+            pixelOverlay.style.display = 'grid';
+            if (!pixelOverlay.children.length) {
+                for (let i = 0; i < 400; i++) {
+                    pixelOverlay.appendChild(document.createElement('div'));
+                }
+            }
+            const pixels = Array.from(pixelOverlay.children);
+            pixels.forEach(p => { p.style.animationName = 'none'; p.style.animationPlayState = 'paused'; });
             
-            populateProfile();
+            requestAnimationFrame(() => {
+                intro.classList.add('hidden');
+                content.classList.remove('hidden');
+                populateAndAnimateProfile();
+
+                pixels.forEach((pixel, i) => {
+                    pixel.style.animationName = 'shrink-and-fade';
+                    const delay = Math.random() * 500;
+                    setTimeout(() => {
+                        pixel.style.animationPlayState = 'running';
+                    }, delay);
+                });
+            });
+            
+            setTimeout(() => {
+                pixelOverlay.style.display = 'none';
+            }, 1000);
 
         }, 1500);
-    });
-
-    nextSectionBtn.addEventListener('click', () => {
-        header.classList.remove('content-hidden');
-        footer.classList.remove('content-hidden');
-        mainContent.classList.remove('content-hidden');
-        
-        nextSectionBtn.style.display = 'none';
-
-        document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
     });
 });

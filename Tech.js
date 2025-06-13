@@ -78,9 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const maxPixelation = 15;
             const maxScale = 2.5;
             let startTime = null;
-
             coinScreen.classList.add('pixelating');
-
             function animationLoop(currentTime) {
                 if (!startTime) startTime = currentTime;
                 const elapsedTime = currentTime - startTime;
@@ -91,28 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const currentOpacity = 1 - progress;
                 coinScreen.style.transform = `scale(${currentScale})`;
                 coinScreen.style.opacity = currentOpacity;
-                
                 if (progress < 1) {
                     requestAnimationFrame(animationLoop);
                 } else {
                     coinScreen.classList.add('hidden');
                     intro.classList.remove('hidden');
                     document.body.classList.add('sword-cursor');
-                    initIntroAnimation(); // 기사 애니메이션 시작
+                    initIntroAnimation();
                     coinScreen.classList.remove('pixelating');
                     coinScreen.style.transform = '';
                     coinScreen.style.opacity = '';
                     pixelateFilter.setAttribute('radius', 0);
                 }
             }
-            
             setTimeout(() => {
                 flashOverlay.classList.add('flash');
                 setTimeout(() => flashOverlay.classList.remove('flash'), 100);
             }, animationDuration / 2);
-
             requestAnimationFrame(animationLoop);
-
         }, 800);
     }
 
@@ -126,29 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         
-        let sprite = {
-            image: new Image(),
-            x: -80,
-            y: window.innerHeight / 2 - 80,
-            width: 80,
-            height: 80,
-            dx: 4, // [수정 완료] 속도를 다시 4로 복원
-            totalFrames: 4,
-            animationSpeed: 8,
-            currentFrame: 0,
-            frameWidth: 0,
-            frameHeight: 0,
-            tickCounter: 0
-        };
+        let sprite = { image: new Image(), x: -80, y: window.innerHeight / 2 - 80, width: 80, height: 80, dx: 4, totalFrames: 4, animationSpeed: 8, currentFrame: 0, frameWidth: 0, frameHeight: 0, tickCounter: 0 };
         
         function drawSprite() { ctx.drawImage( sprite.image, sprite.currentFrame * sprite.frameWidth, 0, sprite.frameWidth, sprite.frameHeight, sprite.x, sprite.y, sprite.width, sprite.height ); }
-        
         function updateSprite() {
             if (sprite.x < canvas.width / 2 - sprite.width / 2) { sprite.x += sprite.dx; } else { sprite.x = canvas.width / 2 - sprite.width / 2; }
             sprite.tickCounter++;
             if (sprite.tickCounter > sprite.animationSpeed) { sprite.tickCounter = 0; sprite.currentFrame = (sprite.currentFrame + 1) % sprite.totalFrames; }
         }
-
         function animate() {
             if (!isIntroAnimationRunning) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -156,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
             drawSprite();
             animationFrameId = requestAnimationFrame(animate);
         }
-
         sprite.image.onload = () => {
             sprite.frameWidth = sprite.image.width / sprite.totalFrames;
             sprite.frameHeight = sprite.image.height;

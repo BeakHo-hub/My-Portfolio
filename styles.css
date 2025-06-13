@@ -47,24 +47,45 @@ body.eightbit::before { content: ""; position: fixed; top: 0; left: 0; width: 10
 /* == 최종 프로필 화면 스타일 == */
 /* =========================================== */
 #content { position: relative; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem; box-sizing: border-box; overflow: hidden; }
-
-/* [수정 완료] 블러 처리된 이미지 배경 */
 #profile-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    background-image: url('knight-background.png'); /* 이미지 파일명 */
-    background-color: #2E1C2B; /* 이미지가 로드되지 않을 때를 위한 배경색 */
-    background-size: contain; /* [수정] 이미지가 잘리지 않도록 contain으로 변경 */
-    background-repeat: no-repeat; /* [추가] 이미지 반복 방지 */
-    background-position: left center; /* [수정] 왼쪽 중앙에 이미지를 고정 */
+    z-index: 0;
+    background-image: url('knight-background.png');
+    background-color: #2E1C2B;
+    background-size: 100% 100%; /* [수정 완료] 화면에 꽉 차도록 강제 확대 */
+    background-position: center;
+    background-repeat: no-repeat;
     filter: blur(5px);
     transform: scale(1.1);
 }
-#profile { border-bottom: none; padding: 0; max-width: 960px; width: 100%; opacity: 0; animation: show-profile-card 1s forwards 0.5s; }
+#knight-foreground {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    height: 80%;
+    z-index: 1;
+    background-image: url('knight-foreground.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    filter: blur(5px);
+    pointer-events: none;
+}
+#profile {
+    position: relative;
+    z-index: 2;
+    border-bottom: none;
+    padding: 0;
+    max-width: 960px;
+    width: 100%;
+    opacity: 0;
+    animation: show-profile-card 1s forwards 0.5s;
+}
 .profile-container { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; width: 100%; }
 .avatar-box { flex-shrink: 0; text-align: center; position: relative; }
 .avatar-box::after { content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; border: 4px solid #FFC1E3; animation: pulse-border 2s infinite; box-shadow: 0 0 15px #FFC1E3; pointer-events: none; }

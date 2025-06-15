@@ -96,23 +96,23 @@ body.eightbit::before{
 }
 #stars-far{
   background-image:
-   radial-gradient(1px 1px at 10% 30%,#FFF,transparent), radial-gradient(1px 1px at 80% 20%,#FFF,transparent),
-   radial-gradient(1px 1px at 55% 75%,#FFF,transparent), radial-gradient(1px 1px at 25% 85%,#FFF,transparent),
-   radial-gradient(1px 1px at 90% 95%,#FFF,transparent), radial-gradient(1px 1px at 5% 5%,  #FFF,transparent),
-   radial-gradient(1px 1px at 40% 60%,#FFF,transparent), radial-gradient(1px 1px at 70% 80%,#FFF,transparent),
-   radial-gradient(1px 1px at 20% 15%,#FFF,transparent), radial-gradient(1px 1px at 95% 50%,#FFF,transparent),
-   radial-gradient(1px 1px at 35% 5%, #FFF,transparent), radial-gradient(1px 1px at 60% 90%,#FFF,transparent),
-   radial-gradient(1px 1px at 5% 70%, #FFF,transparent), radial-gradient(1px 1px at 85% 25%,#FFF,transparent);
+    radial-gradient(1px 1px at 10% 30%,#FFF,transparent), radial-gradient(1px 1px at 80% 20%,#FFF,transparent),
+    radial-gradient(1px 1px at 55% 75%,#FFF,transparent), radial-gradient(1px 1px at 25% 85%,#FFF,transparent),
+    radial-gradient(1px 1px at 90% 95%,#FFF,transparent), radial-gradient(1px 1px at 5% 5%,  #FFF,transparent),
+    radial-gradient(1px 1px at 40% 60%,#FFF,transparent), radial-gradient(1px 1px at 70% 80%,#FFF,transparent),
+    radial-gradient(1px 1px at 20% 15%,#FFF,transparent), radial-gradient(1px 1px at 95% 50%,#FFF,transparent),
+    radial-gradient(1px 1px at 35% 5%, #FFF,transparent), radial-gradient(1px 1px at 60% 90%,#FFF,transparent),
+    radial-gradient(1px 1px at 5% 70%, #FFF,transparent), radial-gradient(1px 1px at 85% 25%,#FFF,transparent);
   background-size:800px 800px;
   animation:move-stars-far-down 150s linear infinite;
 }
 #stars-mid{
   background-image:
-   radial-gradient(2px 2px at 45% 25%,#CCC,transparent), radial-gradient(2px 2px at 70% 60%,#CCC,transparent),
-   radial-gradient(2px 2px at 15% 65%,#CCC,transparent), radial-gradient(2px 2px at 85% 40%,#CCC,transparent),
-   radial-gradient(2px 2px at 30% 90%,#CCC,transparent), radial-gradient(2px 2px at 5% 35%, #CCC,transparent),
-   radial-gradient(2px 2px at 90% 70%,#CCC,transparent), radial-gradient(2px 2px at 25% 50%,#CCC,transparent),
-   radial-gradient(2px 2px at 65% 10%,#CCC,transparent), radial-gradient(2px 2px at 40% 85%,#CCC,transparent);
+    radial-gradient(2px 2px at 45% 25%,#CCC,transparent), radial-gradient(2px 2px at 70% 60%,#CCC,transparent),
+    radial-gradient(2px 2px at 15% 65%,#CCC,transparent), radial-gradient(2px 2px at 85% 40%,#CCC,transparent),
+    radial-gradient(2px 2px at 30% 90%,#CCC,transparent), radial-gradient(2px 2px at 5% 35%, #CCC,transparent),
+    radial-gradient(2px 2px at 90% 70%,#CCC,transparent), radial-gradient(2px 2px at 25% 50%,#CCC,transparent),
+    radial-gradient(2px 2px at 65% 10%,#CCC,transparent), radial-gradient(2px 2px at 40% 85%,#CCC,transparent);
   background-size:1200px 1200px;
   animation:move-stars-mid-down 100s linear infinite;
 }
@@ -212,19 +212,20 @@ body.eightbit::before{
   z-index:10;
   pointer-events:none;
 }
-/* [수정] Projects 섹션 스타일 */
-#projects{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  min-height:100vh;
-  padding:4rem 2rem;
-  box-sizing: border-box;
-  background:#2E1C2B;
-  color:#FFF;
-  /* 전환 효과를 위한 스타일 추가 */
-  opacity: 0;
-  transition: opacity 1.2s ease-in-out;
+/* styles.css */
+#projects {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    box-sizing: border-box;
+    /* [수정] 월드맵 이미지를 배경으로 설정 */
+    background: #1a1a2e url('images/world-map.png') center center / cover no-repeat;
+    color: #FFF;
+    position: relative; /* 자식 요소(스테이지)를 배치할 기준점! 중요! */
+    overflow: hidden; /* 맵 이미지가 넘치지 않도록 설정 */
+    /* z-index는 이제 필요 없으니 삭제해도 됩니다. */
 }
 #projects.visible {
   opacity: 1;
@@ -268,4 +269,187 @@ body.sword-cursor #intro p{cursor:inherit;}
 @keyframes quick-flash {
   0%, 100% { opacity: 0; }
   50% { opacity: 0.8; }
+}
+
+/* ================================================== */
+/* == 화면 전환 (Screen Wipe) 효과 ================== */
+/* ================================================== */
+#content.slide-out,
+#projects.slide-in {
+    /* 전환 효과를 위해 위치를 고정하고, 화면 전체를 차지하도록 설정 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 스크롤바가 생기지 않도록 함 */
+
+    /* transform 속성이 0.7초 동안 ease-in-out 효과로 변경되도록 설정 */
+    transition: transform 0.7s ease-in-out;
+}
+
+/* content 섹션이 왼쪽으로 밀려나가는 효과 */
+#content.slide-out {
+    transform: translateX(-100%);
+}
+
+/* projects 섹션이 오른쪽에서 제자리로 들어오는 효과 */
+#projects.slide-in {
+    transform: translateX(0);
+    z-index: 500; /* [수정] 화면 전환 시 가장 앞으로 오도록 설정 */
+}
+/* styles.css */
+
+/* 스테이지 마커 관련 스타일 */
+.stage-container     <div class="stage-marker" data-project-id="project1" style="left: 17%; top: 33%;">
+        <div class="stage-icon castle"></div>
+        <span class="stage-name">포트폴리오 월드</span>
+    </div>
+
+
+.stage-marker {
+    position: absolute; /* 맵(부모)을 기준으로 위치 지정 */
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.stage-marker:hover {
+    transform: scale(1.2);
+    z-index: 10; /* 호버 시 다른 요소 위로 올라오도록 */
+}
+
+.stage-icon {
+    width: 64px;
+    height: 64px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    /* 아이콘에 펄스 효과 추가 */
+    animation: pulse-icon 2s infinite;
+}
+
+/* 아이콘 이미지 (직접 만드시거나 리소스를 찾아야 합니다) */
+.stage-icon.castle { background-image: url('images/icon-castle.png'); }
+.stage-icon.dungeon { background-image: url('images/icon-dungeon.png'); }
+.stage-icon.village { background-image: url('images/icon-village.png'); }
+
+@keyframes pulse-icon {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* styles.css */
+
+./* styles.css 파일의 .stage-name 부분을 아래 코드로 교체하세요 */
+
+/* styles.css */
+
+.stage-name {
+    /* 폰트 스타일 */
+    font-family: 'Press Start 2P', monospace;
+    color: #fff;
+    font-size: 11px;
+    /* [수정] 그림자를 더 진하게 주어 테두리 효과 강조 */
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+
+    /* 배경 및 모양 */
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    
+    /* 위치 조정 */
+    position: absolute;
+    width: max-content;
+    left: 50%;
+    bottom: -25px;
+    transform: translateX(-50%);
+
+    /* 기타 */
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+/* 마커에 마우스를 올렸을 때 이름표가 커지는 효과 */
+.stage-marker:hover .stage-name {
+    transform: translateX(-50%) scale(1.1);
+}
+
+/* 프로젝트 모달창 스타일 */
+#project-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #2E1C2B;
+    border: 4px solid #73628A;
+    box-shadow: 0 0 0 4px #2E1C2B;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    color: #fff;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #E53935;
+    color: #fff;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+}
+
+.modal-content img {
+    width: 100%;
+    border: 2px solid #73628A;
+    margin-bottom: 1rem;
+    image-rendering: pixelated;
+}
+
+.modal-content h2 {
+    color: #FFC1E3;
+    margin: 0 0 1rem 0;
+}
+
+.modal-content p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.modal-links {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.modal-links a {
+    background: #FFC1E3;
+    color: #2E1C2B;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 2px solid #73628A;
+    transition: transform 0.2s;
+}
+
+.modal-links a:hover {
+    transform: scale(1.05);
 }

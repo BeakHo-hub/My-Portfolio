@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* [수정] body 스타일: 맵을 화면 중앙에 배치하기 위함 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', monospace;
+    background: #000; /* 맵 바깥의 여백 색상 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+body.eightbit::before{
+    content:"";
+    position:fixed;top:0;left:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    background:repeating-linear-gradient(transparent 0,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);
+    z-index:9999;
+}
+
+/* [추가] 맵 비율을 유지하는 컨테이너 */
+.map-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1920px; /* 맵 이미지의 실제 가로 크기 */
+}
+    
+/* [수정] #world-map 스타일: 경로를 png로 변경 */
+#world-map {
+    position: relative;
+    width: 100%;
+    /* 이미지 비율(1080/1920)에 맞춰 높이를 자동으로 조절하는 트릭 */
+    padding-top: 56.25%; 
+    background: url('images/world-map.png') center center / 100% 100% no-repeat;
+    opacity: 0;
+    animation: fade-in 0.5s 0.2s forwards;
+}
+
+.stage {
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.stage:hover {
+    transform: scale(1.15);
+}
+.stage::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: -1;
+}
+.stage img {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.7));
+    margin-bottom: 25px;
+    animation: stage-pulse 3s infinite ease-in-out;
+}
+.stage-name {
+    display: block;
+    position: relative;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    border: 2px solid #73628A;
+    text-shadow: 1px 1px 2px #000;
+}
+
+/* 모달 스타일 */
+#project-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+#project-modal:not(.hidden) {
+    opacity: 1;
+    pointer-events: all;
+}
+.modal-content {
+    background: #2E1C2B;
+    border: 4px solid #73628A;
+    padding: 2.5rem;
+    max-width: 800px;
+    width: 90%;
+    position: relative;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.8;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+}
+#project-modal:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+}
+.modal-content h2 {
+    color: #FFC1E3;
+    font-size: 2rem;
+    margin: 0 0 1.5rem 0;
+}
+.modal-links {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+.modal-links a {
+    background: #FFC1E3;
+    color: #2E1C2B;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    font-size: 1rem;
+    border: 2px solid #73628A;
+    transition: transform 0.2s;
+}
+.modal-links a:hover {
+    transform: scale(1.05);
+}
+
+/* 애니메이션 정의 */
+@keyframes fade-in {
+    to { opacity: 1; }
+}
+@keyframes stage-pulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.7)) brightness(1);
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(3px 3px 4px rgba(0,0,0,0.7)) brightness(1.1);
+    }
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.7)) brightness(1);
+    }
+}
